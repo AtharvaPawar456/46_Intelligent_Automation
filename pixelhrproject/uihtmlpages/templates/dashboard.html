@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+
+    <title>PixelHR - Dashboard</title>
+</head>
+<body class="bg-white text-gray-700">
+    <!-- <div class="text-4xl text-center">PixelHR - Dashboard</div> -->
+
+    <div class="grid grid-cols-7">
+        <div class="border h-screen">
+            
+            <div class="flex py-2 mx-10"><img class="w-10 h-10" src="pixelhr-logo.jpeg" alt="logo">
+                <div class="text-xl font-bold pt-2">PixelHr</div>
+            </div>
+
+            <div class="mx-4 px-2">
+                <div class="text-xl border my-2 rounded-sm px-2 p-2"><i class="fa-solid fa-table mr-2"></i> Tables</div>
+                <div class="text-xl border my-2 rounded-sm px-2 p-2"><i class="fa-solid fa-gear mr-2"></i> Setting</div>
+                <div class="text-xl border my-2 rounded-sm px-2 p-2"><i class="fa-solid fa-chart-simple mr-2"></i> Chart</div>
+                <div class="text-xl border my-2 rounded-sm px-2 p-2"><i class="fa-solid fa-robot mr-2"></i>Bot</div>
+            </div>
+        </div>
+
+
+        <div class="col-span-6 border">
+            
+            <!-- nav bar -->
+            <div class="border grid grid-cols-9 py-2">
+                <div class="col-span-5 ml-10 font-bold text-2xl">Leave Management</div>
+                <div class="col-span-2 mx-6 text-right text-xl">
+                    <i class="fa-solid fa-bell border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
+                    <i class="fa-solid fa-envelope border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
+                </div>
+                <div class="grid grid-cols-3">
+                    
+                    <div class="text-sm col-span-2 my-auto">Atharva Pawar
+                        <b class="mx-10">HR</b>
+                    </div>
+                    <div><img class="w-10 h-10 rounded-full border border-2" src="boy avatar.png" alt=""></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Area -->
+            <div class="p-10">
+
+                <!-- section 1 -->
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="p-6 border rounded-md">
+                        <i class="fa-solid fa-heart p-2 rounded-full bg-indigo-300"></i>
+                        <div class="mt-2">5/220</div>
+                        <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Sick Leave</div>
+                    </div>
+                    <div class="p-6 border rounded-md">
+                        <i class="fa-solid fa-hand-holding-medical p-2 rounded-full bg-indigo-300"></i>
+                        <div class="mt-2">5/220</div>
+                        <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Priviledge Leave</div>
+                    </div>
+                    <div class="p-6 border rounded-md">
+                        <i class="fa-solid fa-door-open p-2 rounded-full bg-indigo-300"></i>
+                        <div class="mt-2">5/220</div>
+                        <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Causal Leave</div>
+                    </div>
+                    <div class="p-6 border rounded-md">
+                        <i class="fa-solid fa-children p-2 rounded-full bg-indigo-300"></i>
+                        <div class="mt-2">5/220</div>
+                        <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Maternity/Paternity Leave</div>
+                    </div>
+
+                </div>
+
+                <!-- section 2 -->
+                <div class=" my-6 border">
+                    <!-- table header -->
+                    <div class="grid grid-cols-6 gap-4 mb-4 border py-4 bg-indigo-100">
+                        <div class="text-center font-bold">eId</div>
+                        <div class="text-center font-bold">Employe Name</div>
+                        <div class="text-center font-bold">Department</div>
+                        <div class="text-center font-bold">Date</div>
+                        <div class="text-center font-bold">Leave Type</div>
+                        <div class="text-center font-bold">Reason</div>
+                        <div class="text-center font-bold">Status</div>
+                    </div>
+                    
+                    <!-- table data (rows) -->
+                    <div class="grid grid-cols-6 gap-4 py-4 border mb-2">
+                        <div class="text-center">12</div>
+                        <div class="text-center">Ryan</div>
+                        <div class="text-center">Software Developer</div>
+                        <div class="text-center">12-1-2024</div>
+                        <div class="text-center">Sick</div>
+                        
+
+                        <div class="tooltip bg-white text-gray-700" data-tip="Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis excepturi fugiat, ratione eius rerum ducimus sunt recusandae modi voluptatibus ipsum expedita. Magnam architecto quod quis?">
+                            <button class="btn btn-primary">Hover me</button>
+                          </div>
+                        <div class="text-center text-white bg-green-700 mx-2 rounded-md my-auto py-2">Approved</div>
+                        <div class="hidden grid grid-cols-2 gap-2 px-2">
+                            <div class="text-center p-2 hover:bg-green-700 hover:text-white bg-green-300 rounded-md">Approve</div>
+                            <div class="text-center p-2 hover:bg-red-700 hover:text-white bg-red-300 rounded-md">Reject</div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+ 
+
+    
+
+</body>
+</html>

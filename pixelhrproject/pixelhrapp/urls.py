@@ -5,8 +5,21 @@ urlpatterns = [
     path("", views.welcome, name="welcome"),
     path("dashboard/", views.dashboard, name="dashboard"),
 
+    path("leavemanage/", views.leavemanage, name="leavemanage"),
+    path("updateleavestat/", views.updateleavestat, name="updateleavestat"),
+    
+    path("reimbusmentmanage/", views.reimbusmentmanage, name="reimbusmentmanage"),
+    path("updatereimbusment/", views.updatereimbusment, name="updatereimbusment"),
 
+
+    path("attendencemanage/", views.attendencemanage, name="attendencemanage"),
+    path("hrbot/", views.hrbot, name="hrbot"),
+    path("hrnotification/", views.hrnotification, name="hrnotification"),
+    path("hrmail/", views.hrmail, name="hrmail"),
   
+
+
+
     path('user_login/', views.user_login, name='user_login'),
     path('user_logout/', views.user_logout, name='user_logout'),
     path('user_register/', views.user_register, name='user_register'),

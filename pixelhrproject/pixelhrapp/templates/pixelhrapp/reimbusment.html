@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'pixelhrapp\setup\pixelhr-logo.jpeg' %}">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -24,30 +25,30 @@
             </div>
 
             <div class="mx-4 px-2">
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-green-600 hover:text-white">
                     <a href="/dashboard"><i class="fa-solid fa-table mr-2"></i> Dashboard</a>
                 </div>
                 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-green-600 hover:text-white">
                     <a href="/leavemanage/?view=all"><i class="fa-solid fa-gear mr-2"></i> Leaves</a>
                 </div>
                 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-green-600 hover:text-white">
                     <a href="/attendencemanage">
                         <i class="fa-solid fa-user mr-2"></i> Attendence</a>
                 </div>
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
-                    <a href="/reimbusmentmanage">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-green-600 hover:text-white">
+                    <a href="/reimbusmentmanage/?view=all">
                         <i class="fa-solid fa-user mr-2"></i>Reimbusment</a>   
                 </div>
                 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-green-600 hover:text-white">
                     <a href="/hrbot">
                         <i class="fa-solid fa-robot mr-2"></i>Bot</a>   
                 </div>
 
 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white"><i class="fa-solid fa-chart-simple mr-2"></i> Chart</div>
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-green-600 hover:text-white"><i class="fa-solid fa-chart-simple mr-2"></i> Chart</div>
             </div>
         </div>
 
@@ -56,10 +57,10 @@
             
             <!-- nav bar -->
             <div class="border grid grid-cols-9 py-2">
-                <div class="col-span-6 ml-10 font-bold text-2xl">Dashboard</div>
+                <div class="col-span-6 ml-10 font-bold text-2xl">Reimbursment Management</div>
                 <div class="col-span-2 mx-6 text-right text-xl">
-                    <i class="fa-solid fa-bell border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
-                    <i class="fa-solid fa-envelope border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
+                    <i class="fa-solid fa-bell border rounded-full p-2 hover:bg-green-700 hover:text-white"></i>
+                    <i class="fa-solid fa-envelope border rounded-full p-2 hover:bg-green-700 hover:text-white"></i>
                 </div>
                 <div class="grid grid-cols-3">
                     
@@ -77,62 +78,68 @@
                 <!-- section 1 -->
                 <div class="grid grid-cols-4 gap-4">
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Sick">
-                            <i class="fa-solid fa-heart p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Sick Leave</div>
+                        <a href="/reimbusmentmanage/?view=Travel" class="text-4xl">
+                            <i class="fa-solid fa-bus p-2 rounded-full bg-green-300 text-2xl px-4"></i>
+                            {{ exp_type_counts.0 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-green-100">Travel</div>
                         </a>
                     </div>
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Privilege">
-                            <i class="fa-solid fa-hand-holding-medical p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Priviledge Leave</div>
+                        <a href="/reimbusmentmanage/?view=Accomodation" class="text-4xl">
+                            <i class="fa-solid fa-house-chimney p-2 rounded-full bg-green-300 text-2xl px-4"></i>
+                            {{ exp_type_counts.1 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-green-100">Accomodation</div>
                         </a>
                     </div>
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Casual">
-                            <i class="fa-solid fa-door-open p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Causal Leave</div>
+                        <a href="/reimbusmentmanage/?view=BusinessMeals" class="text-4xl">
+                            <i class="fa-solid fa-utensils p-2 rounded-full bg-green-300 text-2xl px-4"></i>
+                            {{ exp_type_counts.2 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-green-100">BusinessMeals</div>
                         </a>
                     </div>
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Maternity/Paternity">
-                            <i class="fa-solid fa-children p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Maternity/Paternity Leave</div>
+                        <a href="/reimbusmentmanage/?view=Miscellaneous" class="text-4xl">
+                            <i class="fa-solid fa-shuffle p-2 rounded-full bg-green-300 text-2xl px-4"></i>
+                            {{ exp_type_counts.3 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-green-100">Miscellaneous</div>
                         </a>
                     </div>
 
                 </div>
 
+                <a href="/reimbusmentmanage/?view=Pending"><div class="p-4 border my-4 rounded-md text-2xl hover:bg-green-300"><i class="fa-solid fa-spinner mr-4"></i>See pending Data</div></a>
+
                 <!-- section 2 -->
                 <div class=" my-6 border">
                     <!-- table header -->
-                    <div class="grid grid-cols-7 gap-4 mb-4 border py-4 bg-indigo-100">
-                        <div class="text-center font-bold">eId</div>
+                    <div class="grid grid-cols-9 gap-4 mb-4 border py-4 bg-green-100">
+                        <div class="text-center font-bold">rId</div>
                         <div class="text-center font-bold">Employe Name</div>
                         <div class="text-center font-bold">Department</div>
                         <div class="text-center font-bold">Date</div>
-                        <div class="text-center font-bold">Leave Type</div>
+                        <div class="text-center font-bold">Expense Type</div>
+                        <div class="text-center font-bold">Amount</div>
+                        <div class="text-center font-bold">Payment Type</div>
                         <div class="text-center font-bold">Reason</div>
                         <div class="text-center font-bold">Status</div>
                     </div>
                     
                     <!-- table data (rows) -->
-                    {% for item in leavedata %}
+                    {% for item in reimbursements %}
                     <!-- {{ loop.index }}: {{ item }} -->
-                    <div class="grid grid-cols-7 gap-4 py-4 border mb-2">
-                        <div class="text-center">{{ item.leave_id }}</div>
+                    <div class="grid grid-cols-9 gap-4 py-4 border mb-2">
+                        <div class="text-center">{{ item.reimbus_id }}</div>
                         <div class="text-center">{{ item.user_name }}</div>
                         <div class="text-center">{{ item.department }}</div>
                         <div class="text-center">{{ item.date }}</div>
-                        <div class="text-center">{{ item.leave_type }}</div>
+                        <div class="text-center">{{ item.expense_type }}</div>
+                        <div class="text-center">Rs. {{ item.amount }}</div>
+                        <div class="text-center">{{ item.paymenttype | title }}</div>
                         
 
-                        <div class="tooltip tooltip-gray-200 bg-white text-gray-700" data-tip="{{ item.reason }}">
-                            <button class="btn text-white bg-indigo-600 hover:bg-indigo-700">View Reason</button>
+                        <div class="tooltip tooltip-gray-200 bg-white text-gray-700" data-tip="{{ item.shortdesc }}">
+                            <button class="btn text-gray-800 bg-green-300 hover:bg-green-700 hover:text-white">View Desc</button>
                         </div>
 
                         {% if item.status == 'Approved' %}
@@ -142,10 +149,10 @@
                         {% elif item.status == 'Pending' %}
                             <div class="grid grid-cols-2 gap-2 px-2">
                                 <div class="text-center text-sm p-2 pt-3 hover:bg-green-700 hover:text-white bg-green-300 rounded-md">
-                                    <a href="/updateleavestat/?leave_id={{ item.leave_id }}&status=Approved">Approve</a>
+                                    <a href="/updatereimbusment/?reimbus_id={{ item.reimbus_id }}&status=Approved"><i class="fa-solid fa-check"></i></a>
                                 </div>
                                 <div class="text-center text-sm p-2 pt-3 hover:bg-red-700 hover:text-white bg-red-300 rounded-md">    
-                                    <a href="/updateleavestat/?leave_id={{ item.leave_id }}&status=Rejected">Reject</a>
+                                    <a href="/updatereimbusment/?reimbus_id={{ item.reimbus_id }}&status=Rejected"><i class="fa-solid fa-x"></i></a>
                                 </div>
                             </div>
                         {% endif %}

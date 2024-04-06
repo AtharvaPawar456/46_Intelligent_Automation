@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% load static %}
-
+    
+    <link rel="icon" type="image/x-icon" href="{% static 'pixelhrapp\setup\pixelhr-logo.jpeg' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
@@ -56,7 +57,7 @@
             
             <!-- nav bar -->
             <div class="border grid grid-cols-9 py-2">
-                <div class="col-span-6 ml-10 font-bold text-2xl">Dashboard</div>
+                <div class="col-span-6 ml-10 font-bold text-2xl">Attendence Management</div>
                 <div class="col-span-2 mx-6 text-right text-xl">
                     <i class="fa-solid fa-bell border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
                     <i class="fa-solid fa-envelope border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
@@ -74,39 +75,7 @@
             <!-- Dashboard Area -->
             <div class="p-10">
 
-                <!-- section 1 -->
-                <div class="grid grid-cols-4 gap-4">
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Sick">
-                            <i class="fa-solid fa-heart p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Sick Leave</div>
-                        </a>
-                    </div>
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Privilege">
-                            <i class="fa-solid fa-hand-holding-medical p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Priviledge Leave</div>
-                        </a>
-                    </div>
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Casual">
-                            <i class="fa-solid fa-door-open p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Causal Leave</div>
-                        </a>
-                    </div>
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Maternity/Paternity">
-                            <i class="fa-solid fa-children p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Maternity/Paternity Leave</div>
-                        </a>
-                    </div>
-
-                </div>
-
+                <div class="text-2xl font-bold">Employees</div>
                 <!-- section 2 -->
                 <div class=" my-6 border">
                     <!-- table header -->

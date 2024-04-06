@@ -1,6 +1,6 @@
 #  i have created this file - GTA
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, logout
@@ -8,14 +8,20 @@ from django.contrib.auth.decorators import login_required
 
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-# from .models import SensorData, Nodedata, Clusterdata
+from .models import Leave, Reimbusement
 # import uuid
 import random
+from random import choice
+from django.db import IntegrityError
+
 
 import folium
 
 import ast
 from datetime import datetime, timedelta
+# from datetime import date
+from django.utils import timezone
+
 
 # You can use the ast module in Python to safely convert a string representation of a list to an actual list. Here's how you can do it:
 
@@ -29,14 +35,353 @@ def welcome(request):
     return render(request, 'pixelhrapp/welcome.html')
 
 def dashboard(request):
+    # create_dummy_leave_dataset()
+    print("done leave data adding")
     return render(request, 'pixelhrapp/dashboard.html')
 
+def attendencemanage(request):
+    return render(request, 'pixelhrapp/attendence.html')
+
+
+def reimbusmentmanage(request):
+    view_type = request.GET.get('view')
+
+    if view_type == 'all':
+        # Get all reimbursements
+        reimbus = Reimbusement.objects.all()
+    elif view_type == 'Pending':
+        # Get reimbursements with status 'Pending'
+        reimbus = Reimbusement.objects.filter(status=view_type)
+    elif view_type in ['Travel', 'Accomodation', 'BusinessMeals', 'Miscellaneous']:
+        # Get reimbursements based on expense_type
+        reimbus = Reimbusement.objects.filter(expense_type=view_type)
+    else:
+        # Handle invalid or missing view parameter
+        return JsonResponse({'error': 'Invalid or missing view parameter'}, status=400)
+
+
+    # Serialize the reimbus data
+    serialized_data = [{
+        'reimbus_id': leave.reimbus_id,
+        'department': leave.department,
+        'user_name': leave.user_name,
+        'date': leave.date.strftime('%Y-%m-%d'),
+        'expense_type': leave.expense_type,
+        'amount': leave.amount,
+        'shortdesc': leave.shortdesc,
+        'status': leave.status,
+        'paymenttype': leave.paymenttype,
+    } for leave in reimbus]
+
+    serialized_data_inverted = serialized_data[::-1]
+
+
+    # create_dummy_leave_dataset()
+    # delete_all_reimbursements()
+    expense_typelist = ['Travel', 'Accomodation', 'BusinessMeals', 'Miscellaneous']
+    exp_type_counts = [0, 0, 0, 0]
+    # Count the number of records where expense_type matches expense_type_to_count
+    exp_type_counts[0] = Reimbusement.objects.filter(expense_type=expense_typelist[0]).count()
+    exp_type_counts[1] = Reimbusement.objects.filter(expense_type=expense_typelist[1]).count()
+    exp_type_counts[2] = Reimbusement.objects.filter(expense_type=expense_typelist[2]).count()
+    exp_type_counts[3] = Reimbusement.objects.filter(expense_type=expense_typelist[3]).count()
+
+    # Retrieve data from the Reimbursement model
+    # reimbursements = Reimbusement.objects.all()
+
+    # Invert the list
+    # inverted_reimbursements = reversed(reimbursements)
+
+    params = {
+        "reimbursements" : serialized_data_inverted,
+        "exp_type_counts" : exp_type_counts,
+    }
+
+    return render(request, 'pixelhrapp/reimbusment.html', params)
+
+def updatereimbusment(request):
+    if request.method == 'GET':
+        # Get the leave_id and status from the request
+        reimbus_id = request.GET.get('reimbus_id')
+        status = request.GET.get('status')
+
+        # Get the Leave instance using leave_id
+        leave_instance = get_object_or_404(Reimbusement, reimbus_id=reimbus_id)
+
+        # Update the status of the Leave instance
+        leave_instance.status = status
+        leave_instance.save()
+
+        # return JsonResponse({'message': 'Leave status updated successfully'}, status=200)
+        redirect_url = '/reimbusmentmanage/?view=all'
+        return redirect(redirect_url)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+'''
+
+http://127.0.0.1:8000/reimbusmentmanage/?view=all
+
+http://127.0.0.1:8000/updatereimbusment/?reimbus_id=28&status=Approved
+'''
+
+
+def hrbot(request):
+    return render(request, 'pixelhrapp/hrbotpage.html')
+
+def hrnotification(request):
+    return render(request, 'pixelhrapp/notification.html')
+
+def hrmail(request):
+    return render(request, 'pixelhrapp/notification.html')
 
 
 
 
+def leavemanage(request):
+    view_type = request.GET.get('view')
+
+    if view_type == 'all':
+        # Get all reimbursements
+        leaves = Leave.objects.all()
+    elif view_type == 'Pending':
+        # Get reimbursements with status 'Pending'
+        leaves = Leave.objects.filter(status=view_type)
+    elif view_type in ['Sick', 'Privilege', 'Casual', 'Maternity/Paternity']:
+        # Get reimbursements based on expense_type
+        leaves = Leave.objects.filter(leave_type=view_type)
+    else:
+        # Handle invalid or missing view parameter
+        return JsonResponse({'error': 'Invalid or missing view parameter'}, status=400)
 
 
+
+
+    # Serialize the leaves data
+    serialized_data = [{
+        'leave_id': leave.leave_id,
+        'department': leave.department,
+        'user_name': leave.user_name,
+        'date': leave.date.strftime('%Y-%m-%d'),
+        'leave_type': leave.leave_type,
+        'days': leave.days,
+        'reason': leave.reason,
+        'status': leave.status
+    } for leave in leaves]
+
+    serialized_data_inverted = serialized_data[::-1]
+
+    leave_types = ['Sick', 'Privilege', 'Casual', 'Maternity/Paternity']
+
+    leave_type_counts = [0, 0, 0, 0]
+    # Count the number of records where expense_type matches expense_type_to_count
+    leave_type_counts[0] = Leave.objects.filter(leave_type=leave_types[0]).count()
+    leave_type_counts[1] = Leave.objects.filter(leave_type=leave_types[1]).count()
+    leave_type_counts[2] = Leave.objects.filter(leave_type=leave_types[2]).count()
+    leave_type_counts[3] = Leave.objects.filter(leave_type=leave_types[3]).count()
+
+
+    params = {
+        "leavedata" : serialized_data_inverted,
+        "leave_type_counts" : leave_type_counts,
+
+    }
+    # return JsonResponse(serialized_data, safe=False)
+    return render(request, 'pixelhrapp/leavemanage.html', params)
+
+
+def updateleavestat(request):
+    if request.method == 'GET':
+        # Get the leave_id and status from the request
+        leave_id = request.GET.get('leave_id')
+        status = request.GET.get('status')
+
+        # Get the Leave instance using leave_id
+        leave_instance = get_object_or_404(Leave, leave_id=leave_id)
+
+        # Update the status of the Leave instance
+        leave_instance.status = status
+        leave_instance.save()
+
+        # return JsonResponse({'message': 'Leave status updated successfully'}, status=200)
+        redirect_url = '/leavemanage/?view=all'
+        return redirect(redirect_url)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+'''
+
+http://127.0.0.1:8000/leavemanage/?view=Privilege
+
+http://127.0.0.1:8000/updateleavestat/?leave_id=28&status=Approved
+'''
+# def delete_all_reimbursements():
+#     try:
+#         Reimbusement.objects.all().delete()
+#         print("All data deleted successfully")
+#     except IntegrityError as e:
+#         print(f"Error deleting data: {e}")
+
+def create_dummy_leave_dataset():
+
+#     sick_leave_reasons = [
+#     "Fever and flu symptoms persisting for several days.",
+#     "Severe headache and body ache causing discomfort.",
+#     "Doctor advised bed rest due to respiratory infection.",
+#     "Recovering from a minor surgical procedure at the hospital.",
+#     "Nausea and vomiting due to food poisoning.",
+#     "Migraine attacks affecting productivity and concentration.",
+#     "Experiencing severe back pain hindering mobility.",
+#     "Allergic reaction causing skin rash and itching.",
+#     "Chronic illness flare-up requiring immediate medical attention.",
+#     "Sudden onset of stomach cramps and diarrhea."
+# ]
+
+#     privilege_leave_reasons = [
+#         "Celebrating a special occasion with family and friends.",
+#         "Taking a short vacation to rejuvenate and relax.",
+#         "Attending a family wedding ceremony out of town.",
+#         "Participating in a cultural festival in the hometown.",
+#         "Visiting relatives and spending quality time with them.",
+#         "Renovating home and overseeing construction work.",
+#         "Completing pending personal errands and tasks.",
+#         "Taking a break to focus on personal hobbies and interests.",
+#         "Attending a career development workshop or seminar.",
+#         "Volunteering for a social cause and community service."
+#     ]
+
+#     casual_leave_reasons = [
+#         "Attending a medical appointment or health checkup.",
+#         "Sudden family emergency requiring immediate attention.",
+#         "Attending a parent-teacher meeting at child's school.",
+#         "Rescheduling personal commitments and appointments.",
+#         "Participating in a sports or recreational activity.",
+#         "Attending a friend's birthday celebration or party.",
+#         "Going for a shopping trip to buy essential items.",
+#         "Taking a day off to relax and unwind at home.",
+#         "Dealing with unexpected household repairs or maintenance.",
+#         "Traveling for a short trip or weekend getaway."
+#     ]
+
+#     maternity_paternity_leave_reasons = [
+#         "Welcoming a new addition to the family with newborn care.",
+#         "Supporting spouse during childbirth and postpartum recovery.",
+#         "Bonding with the newborn and adjusting to new family dynamics.",
+#         "Attending prenatal checkups and childbirth classes.",
+#         "Taking time off to be with the newborn and help with childcare.",
+#         "Adopting a child and spending quality time with the new family member.",
+#         "Supporting partner during adoption process and transition.",
+#         "Arranging for childcare arrangements and family support.",
+#         "Managing household responsibilities during parental leave.",
+#         "Preparing for parenthood and adjusting to new routines."
+#     ]
+
+    Travel = [
+        'Flight tickets',
+        'Taxi fare',
+        'Car rental',
+        'Parking fees',
+        'Train tickets',
+        'Gasoline',
+        'Toll fees',
+        'Visa fees',
+        'Baggage fees',
+        'Public transportation fares',
+    ]
+    Accomodation = [
+        'Hotel stay',
+        'Resort booking',
+        'Airbnb rental',
+        'Hostel accommodation',
+        'Cabin rental',
+        'Motel stay',
+        'Bed and breakfast',
+        'Luxury hotel suite',
+        'Dormitory booking',
+        'Vacation rental',
+    ]
+    BusinessMeals = [
+        'Dinner meeting',
+        'Lunch with partner',
+        'Coffee meeting',
+        'Breakfast during event',
+        'Team lunch',
+        'Client entertainment',
+        'Happy hour drinks',
+        'Business dinner',
+        'Conference lunch',
+        'Breakfast meeting',
+    ]
+    Miscellaneous = [
+        'Office supplies purchase',
+        'Printing and photocopying charges',
+        'Software subscription renewal',
+        'Membership fee',
+        'Business card printing',
+        'Internet and phone bill',
+        'Conference registration fee',
+        'Transportation expenses',
+        'Gift for client or colleague',
+        'Charitable donation',
+    ]
+
+#     leave_types = ['Sick', 'Privilege', 'Casual', 'Maternity/Paternity']
+    expense_typelist = ['Travel', 'Accomodation', 'BusinessMeals', 'Miscellaneous']
+    departments = ['HR', 'Finance', 'IT', 'Operations']
+    statuses = ['Pending', 'Approved', 'Rejected']
+    paymenttype = ['check','deposit']
+
+    for _ in range(40):
+        # Choose random values for department, user_name, leave_type, reason, and status
+        department = choice(departments)
+        user_name = "Employee" + str(_)
+        date = timezone.now()
+        expense_type = choice(expense_typelist)
+        days = str(1)  # Assuming each leave is for one day, you can change this as needed
+        status = choice(statuses)
+        # Select a random reason based on the leave type
+        if expense_type == 'Travel':
+            shortdesc = choice(Travel)
+        elif expense_type == 'Accomodation':
+            shortdesc = choice(Accomodation)
+        elif expense_type == 'BusinessMeals':
+            shortdesc = choice(BusinessMeals)
+        elif expense_type == 'Miscellaneous':
+            shortdesc = choice(Miscellaneous)
+
+        # Create Leave instance and save it to the database
+        Reimbusementdata = Reimbusement.objects.create(
+            department=department,
+            user_name=user_name,
+            date=date,
+            expense_type=expense_type,
+            amount=random.randint(100, 20000),
+            days=days,
+            shortdesc=shortdesc,
+            pdfpath="static/pixelhrapp/reimbuspdf",
+            status=status,
+            paymenttype=choice(paymenttype)
+        )
+        Reimbusementdata.save()
+
+# Call the function to create the dataset
+# create_dummy_leave_dataset()
+
+
+'''
+    department = models.CharField(max_length=100, default="")
+    user_name = models.CharField(max_length=255, default="")
+    date = models.DateField()
+    expense_type = models.CharField(max_length=50, default="")
+    amount = models.CharField(max_length=100, default="")
+    days = models.CharField(max_length=50, default="")
+    shortdesc = models.TextField()
+    pdfpath = models.CharField(max_length=50, default="")
+    status = models.CharField(max_length=50, default="")
+    paymenttype = models.CharField(max_length=50, default="") #check/deposit
+
+'''
 
 
 

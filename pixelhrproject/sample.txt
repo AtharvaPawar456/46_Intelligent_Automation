@@ -1,0 +1,92 @@
+Identification and Personal Details:
+  class caccountdata(models.Model):
+    acc_id = models.AutoField(primary_key=True)
+    user_name = models.CharField(max_length=255, default="")
+    fullname = models.CharField(max_length=255, default="")
+    password = models.CharField(max_length=255, default="")
+    email = models.CharField(max_length=255, default="")
+    phoneno = models.CharField(max_length=255, default="")
+    employee_photo = 
+    address = models.CharField(max_length=255, default="")
+    gender = models.CharField(max_length=255, default="")
+    dateofbirth = 
+    
+    
+    description = models.CharField(max_length=255, default="")
+    role = models.CharField(max_length=255, default="") #HR, Manager, Employeeeeeee
+    department = models.CharField(max_length=255, default="")
+
+    dateofjoin = models.CharField(max_length=255, default="")
+    gender = models.CharField(max_length=255, default="")
+    
+    Professional Details:
+
+jobtitle = models.CharField(max_length=255, default="")
+department = models.CharField(max_length=255, default="")
+manager = models.CharField(max_length=255, default="")
+
+
+Employment Status (selector)(Full-time, Part-time, Contract)
+Employment Type (selector)(Permanent, Temporary, Internship)
+Work Location(selector not input field) (2-3 sample offices)
+
+
+
+Leave Details:
+
+leavetaken = models.IntegerField(default=0)
+leavebalance = models.IntegerField(default=0)
+leavetype = [Sick Leave,Privilege Leave,Casual Leave,Maternity/Paternity Leave]
+
+Leave Approval History 
+
+
+Salary Details:
+
+basicpay = models.IntegerField(default=0)
+
+allowances = [
+    "House Rent Allowance (HRA)",
+    "Dearness Allowance (DA)",
+    "Travel Allowance (TA)",
+    "Medical Allowance",
+    "Special Allowance",
+    "City Compensatory Allowance (CCA)",
+    "Children's Education Allowance",
+    "Food Allowance"
+]
+
+deductions = [
+    "Provident Fund (PF)"
+    "Professional Tax (PT)",
+    "Income Tax (TDS)",
+    "Insurance Premiums",
+    "Other Voluntary Deductions"
+]
+
+paygrade = models.CharField(max_length=255, default="")
+
+benefits = models.CharField(max_length=255,default="")
+
+
+Attendance Details:
+
+class attendance(models.Model):
+    acc_id = models.AutoField(primary_key=True)
+    user_name = models.CharField(max_length=255,default="")
+    checkin = models.BooleanField(default = False)
+    checkout = models.BooleanField(default = False)
+    overtimeduration = models.IntegerField(default=0)
+    
+
+
+
+Attendance Reports (visual)
+
+Performance Record:
+
+appraisalrating = models.IntegerField( )  
+#maximum 5
+
+
+'''

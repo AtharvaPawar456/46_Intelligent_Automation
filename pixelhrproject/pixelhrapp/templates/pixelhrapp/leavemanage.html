@@ -6,6 +6,7 @@
 
     {% load static %}
 
+    <link rel="icon" type="image/x-icon" href="{% static 'pixelhrapp\setup\pixelhr-logo.jpeg' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
@@ -24,30 +25,30 @@
             </div>
 
             <div class="mx-4 px-2">
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-orange-600 hover:text-white">
                     <a href="/dashboard"><i class="fa-solid fa-table mr-2"></i> Dashboard</a>
                 </div>
                 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-orange-600 hover:text-white">
                     <a href="/leavemanage/?view=all"><i class="fa-solid fa-gear mr-2"></i> Leaves</a>
                 </div>
                 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-orange-600 hover:text-white">
                     <a href="/attendencemanage">
                         <i class="fa-solid fa-user mr-2"></i> Attendence</a>
                 </div>
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
-                    <a href="/reimbusmentmanage">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-orange-600 hover:text-white">
+                    <a href="/reimbusmentmanage/?view=all">
                         <i class="fa-solid fa-user mr-2"></i>Reimbusment</a>   
                 </div>
                 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-orange-600 hover:text-white">
                     <a href="/hrbot">
                         <i class="fa-solid fa-robot mr-2"></i>Bot</a>   
                 </div>
 
 
-                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white"><i class="fa-solid fa-chart-simple mr-2"></i> Chart</div>
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-orange-600 hover:text-white"><i class="fa-solid fa-chart-simple mr-2"></i> Chart</div>
             </div>
         </div>
 
@@ -56,10 +57,10 @@
             
             <!-- nav bar -->
             <div class="border grid grid-cols-9 py-2">
-                <div class="col-span-6 ml-10 font-bold text-2xl">Dashboard</div>
+                <div class="col-span-6 ml-10 font-bold text-2xl">Leave Management</div>
                 <div class="col-span-2 mx-6 text-right text-xl">
-                    <i class="fa-solid fa-bell border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
-                    <i class="fa-solid fa-envelope border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
+                    <a href="/hrnotification"><i class="fa-solid fa-bell border rounded-full p-2 hover:bg-orange-700 hover:text-white"></i></a>
+                    <a href="/hrmail"><i class="fa-solid fa-envelope border rounded-full p-2 hover:bg-orange-700 hover:text-white"></i></a>
                 </div>
                 <div class="grid grid-cols-3">
                     
@@ -77,40 +78,43 @@
                 <!-- section 1 -->
                 <div class="grid grid-cols-4 gap-4">
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Sick">
-                            <i class="fa-solid fa-heart p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Sick Leave</div>
+                        <a href="/leavemanage/?view=Sick" class="text-4xl">
+                            <i class="fa-solid fa-heart p-2 rounded-full bg-orange-300 px-4"></i>
+                            {{ leave_type_counts.0 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-orange-100">Sick Leave</div>
                         </a>
                     </div>
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Privilege">
-                            <i class="fa-solid fa-hand-holding-medical p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Priviledge Leave</div>
+                        <a href="/leavemanage/?view=Privilege" class="text-4xl">
+                            <i class="fa-solid fa-hand-holding-medical p-2 rounded-full bg-orange-300 px-4"></i>
+                            {{ leave_type_counts.1 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-orange-100">Priviledge Leave</div>
                         </a>
                     </div>
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Casual">
-                            <i class="fa-solid fa-door-open p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Causal Leave</div>
+                        <a href="/leavemanage/?view=Casual" class="text-4xl">
+                            <i class="fa-solid fa-door-open p-2 rounded-full bg-orange-300 px-4"></i>
+                            {{ leave_type_counts.2 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-orange-100">Causal Leave</div>
                         </a>
                     </div>
                     <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Maternity/Paternity">
-                            <i class="fa-solid fa-children p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Maternity/Paternity Leave</div>
+                        <a href="/leavemanage/?view=Maternity/Paternity" class="text-4xl">
+                            <i class="fa-solid fa-children p-2 rounded-full bg-orange-300 px-4"></i>
+                            {{ leave_type_counts.3 }}
+                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-orange-100">Maternity/Paternity Leave</div>
                         </a>
                     </div>
 
                 </div>
 
+                <a href="/leavemanage/?view=Pending"><div class="p-4 border my-4 rounded-md text-2xl hover:bg-orange-300"><i class="fa-solid fa-spinner mr-4"></i>See pending Data</div></a>
+
+
                 <!-- section 2 -->
                 <div class=" my-6 border">
                     <!-- table header -->
-                    <div class="grid grid-cols-7 gap-4 mb-4 border py-4 bg-indigo-100">
+                    <div class="grid grid-cols-7 gap-4 mb-4 border py-4 bg-orange-100">
                         <div class="text-center font-bold">eId</div>
                         <div class="text-center font-bold">Employe Name</div>
                         <div class="text-center font-bold">Department</div>
@@ -132,7 +136,7 @@
                         
 
                         <div class="tooltip tooltip-gray-200 bg-white text-gray-700" data-tip="{{ item.reason }}">
-                            <button class="btn text-white bg-indigo-600 hover:bg-indigo-700">View Reason</button>
+                            <button class="btn text-gray-800 bg-orange-300 hover:bg-orange-700 hover:text-white">View Reason</button>
                         </div>
 
                         {% if item.status == 'Approved' %}

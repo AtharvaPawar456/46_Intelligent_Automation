@@ -3,25 +3,25 @@ from django.db import models
 # Create your models here.
 
 
-class caccountdata(models.Model):
-    acc_id = models.AutoField(primary_key=True)
-    user_name = models.CharField(max_length=255, default="")
-    password = models.CharField(max_length=255, default="")
-    email = models.CharField(max_length=255, default="")
-    phoneno = models.CharField(max_length=255, default="")
-    description = models.CharField(max_length=255, default="")
-    role = models.CharField(max_length=255, default="") #HR, Manager, Employeeeeeee
-    department = models.CharField(max_length=255, default="")
+# class caccountdata(models.Model):
+#     acc_id = models.AutoField(primary_key=True)
+#     user_name = models.CharField(max_length=255, default="")
+#     password = models.CharField(max_length=255, default="")
+#     email = models.CharField(max_length=255, default="")
+#     phoneno = models.CharField(max_length=255, default="")
+#     description = models.CharField(max_length=255, default="")
+#     role = models.CharField(max_length=255, default="") #HR, Manager, Employeeeeeee
+#     department = models.CharField(max_length=255, default="")
 
-    dateofjoin = models.CharField(max_length=255, default="")
-    gender = models.CharField(max_length=255, default="")
+#     dateofjoin = models.CharField(max_length=255, default="")
+#     gender = models.CharField(max_length=255, default="")
 
 
 
-    # clust_data = models.CharField(max_length=500, default="")
+#     # clust_data = models.CharField(max_length=500, default="")
 
-    def __str__(self):
-        return f"{self.user_name} - Role : {self.role} Dep : {self.department}"
+#     def __str__(self):
+#         return f"{self.user_name} - Role : {self.role} Dep : {self.department}"
     
 
 

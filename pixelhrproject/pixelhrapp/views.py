@@ -29,7 +29,7 @@ def welcome(request):
     return render(request, 'pixelhrapp/welcome.html')
 
 def dashboard(request):
-    return render(request, 'pixelhrapp/welcome.html')
+    return render(request, 'pixelhrapp/dashboard.html')
 
 
 
@@ -79,7 +79,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('viewNodes')  # Redirect to your dashboard view
+            return redirect('dashboard')  # Redirect to your dashboard view
         else:
             error_message = 'Invalid username or password'
     else:

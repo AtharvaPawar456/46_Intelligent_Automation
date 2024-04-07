@@ -22,17 +22,28 @@ class Employaccdata(models.Model):
     jobtitle = models.CharField(max_length=255, default="")
     manager = models.CharField(max_length=255, default="")
     dateofjoin = models.CharField(max_length=255, default="")
+    status = models.CharField(max_length=50, default="") # Working, NotWorking, OnLeave 
 
 
     EmpStatus = models.CharField(max_length=255, default="") # (Full-time, Part-time, Contract)
     EmpType = models.CharField(max_length=255, default="") # (Permanent, Temporary, Internship)
     WorkLoc = models.CharField(max_length=1000, default="") # (2-3 sample offices)
 
+    Checkin = models.CharField(max_length= 50, default="12:00") # (2-3 sample offices)
+    Checkout = models.CharField(max_length=50, default="19:00") # (2-3 sample offices)
+
     # Annully
-    SickLeavecount = models.CharField(max_length=255, default="")
-    PrivilegeLeavecount = models.CharField(max_length=255, default="")
-    CasualLeavecount = models.CharField(max_length=255, default="")
-    MaternityLeavecount = models.CharField(max_length=255, default="")
+    SickLeavecount = models.CharField(max_length=255, default="0")
+    PrivilegeLeavecount = models.CharField(max_length=255, default="0")
+    CasualLeavecount = models.CharField(max_length=255, default="0")
+    MaternityLeavecount = models.CharField(max_length=255, default="0")
+
+    Productivityvalue   = models.CharField(max_length=10, default="0")
+    Satisfactionvalue   = models.CharField(max_length=10, default="0")
+    FeedbackScorevalue  = models.CharField(max_length=10, default="0")
+    Skillsvalue         = models.CharField(max_length=10, default="0")
+    Communicationvalue  = models.CharField(max_length=10, default="0")
+
 
     # clust_data = models.CharField(max_length=500, default="")
 
@@ -52,6 +63,7 @@ class Leave(models.Model):
     leave_type = models.CharField(max_length=50, default="")
     days = models.CharField(max_length=50, default="")
     reason = models.TextField()
+    llmsuggest = models.CharField(max_length=50, default="") # Yes, No, Maybe
     status = models.CharField(max_length=50, default="")
 
 
@@ -78,6 +90,26 @@ class Reimbusement(models.Model):
     
 
 
+class Msgdata(models.Model):
+    msg_id = models.AutoField(primary_key=True)
+
+    user_name = models.CharField(max_length=255, default="")
+    shortdesc = models.TextField()
+
+    def __str__(self):
+        return f"{self.msg_id} - {self.user_name}"
+
+
+class Chatdata(models.Model):
+    chat_id = models.AutoField(primary_key=True)
+
+    
+    user_name = models.CharField(max_length=255, default="")
+    query = models.TextField()
+    shortdesc = models.TextField()
+
+    def __str__(self):
+        return f"{self.chat_id} - {self.user_name}"
 
 
 

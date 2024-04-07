@@ -83,41 +83,33 @@
                         <div class="text-center font-bold">eId</div>
                         <div class="text-center font-bold">Employe Name</div>
                         <div class="text-center font-bold">Department</div>
-                        <div class="text-center font-bold">Date</div>
-                        <div class="text-center font-bold">Leave Type</div>
-                        <div class="text-center font-bold">Reason</div>
+                        <div class="text-center font-bold">Role</div>
                         <div class="text-center font-bold">Status</div>
+                        <div class="text-center font-bold">Join Date</div>
+                        <div class="text-center font-bold">Profile</div>
                     </div>
                     
                     <!-- table data (rows) -->
-                    {% for item in leavedata %}
+                    {% for item in attend %}
                     <!-- {{ loop.index }}: {{ item }} -->
                     <div class="grid grid-cols-7 gap-4 py-4 border mb-2">
-                        <div class="text-center">{{ item.leave_id }}</div>
-                        <div class="text-center">{{ item.user_name }}</div>
+                        <div class="text-center">{{ item.eacc_id }}</div>
+                        <div class="text-center">{{ item.user_name | title }}</div>
                         <div class="text-center">{{ item.department }}</div>
-                        <div class="text-center">{{ item.date }}</div>
-                        <div class="text-center">{{ item.leave_type }}</div>
-                        
+                        <div class="text-center">{{ item.role }}</div>
 
-                        <div class="tooltip tooltip-gray-200 bg-white text-gray-700" data-tip="{{ item.reason }}">
-                            <button class="btn text-white bg-indigo-600 hover:bg-indigo-700">View Reason</button>
-                        </div>
-
-                        {% if item.status == 'Approved' %}
-                                <div class="text-center text-white bg-green-700 mx-2 rounded-md my-auto py-2">Approved</div>
-                        {% elif item.status == 'Rejected' %}
-                        <div class="text-center text-white bg-red-700 mx-2 rounded-md my-auto py-2">Rejected</div>
-                        {% elif item.status == 'Pending' %}
-                            <div class="grid grid-cols-2 gap-2 px-2">
-                                <div class="text-center text-sm p-2 pt-3 hover:bg-green-700 hover:text-white bg-green-300 rounded-md">
-                                    <a href="/updateleavestat/?leave_id={{ item.leave_id }}&status=Approved">Approve</a>
-                                </div>
-                                <div class="text-center text-sm p-2 pt-3 hover:bg-red-700 hover:text-white bg-red-300 rounded-md">    
-                                    <a href="/updateleavestat/?leave_id={{ item.leave_id }}&status=Rejected">Reject</a>
-                                </div>
-                            </div>
+                        {% if item.status == 'Working' %}
+                            <div class="text-center p-1 border bg-green-400 rounded-md font-bold">{{ item.status }}</div>
+                        {% elif item.status == 'NotWorking' %}
+                        <div class="text-center p-1 border bg-red-400 rounded-md font-bold">{{ item.status }}</div>
+                        {% elif item.status == 'OnLeave' %}
+                        <div class="text-center p-1 border bg-yellow-400 rounded-md font-bold">{{ item.status }}</div>
                         {% endif %}
+
+
+                        <div class="text-center">{{ item.dateofjoin }}</div>
+                        <div class="text-center"><a href="/employprofile/?profileid={{ item.eacc_id }}"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+
                     </div>
                     {% endfor %}
 

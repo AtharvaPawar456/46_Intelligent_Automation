@@ -6,6 +6,7 @@
 
     {% load static %}
 
+    <link rel="icon" type="image/x-icon" href="{% static 'pixelhrapp\setup\pixelhr-logo.jpeg' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
@@ -72,92 +73,43 @@
             </div>
 
             <!-- Dashboard Area -->
-            <div class="p-10">
+            
+            <div class="p-10 mb-20">
+                <!-- bot chat -->
+                <div class="p-2 border rounded-md w-8/12 my-4"><b><i class="fa-solid fa-user mr-2"></i>HrBot</b> : Hello {{ user.username|title }}</div>
+                {% for item in chat_data %}
+                
+                
+                <!-- hr-user chat -->
+                <div class="p-2 border rounded-md ml-[420px] my-4 text-right w-8/12">{{item.query}} : <b>{{ user.username|title }}<i class="fa-solid fa-user ml-2"></i></b></div>
+                
+                <!-- bot chat -->
+                <div class="p-2 border rounded-md w-8/12 my-4"><b><i class="fa-solid fa-user mr-2"></i>HrBot</b> : {{item.shortdesc}}</div>
+                
+                {% endfor %}
+            </div>
+            
+            <!-- last_10_records -->
+            <div class="">
+                {% for item in last_10_records %}
 
-                <!-- section 1 -->
-                <div class="grid grid-cols-4 gap-4">
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Sick">
-                            <i class="fa-solid fa-heart p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Sick Leave</div>
-                        </a>
-                    </div>
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Privilege">
-                            <i class="fa-solid fa-hand-holding-medical p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Priviledge Leave</div>
-                        </a>
-                    </div>
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Casual">
-                            <i class="fa-solid fa-door-open p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Causal Leave</div>
-                        </a>
-                    </div>
-                    <div class="p-6 border rounded-md">
-                        <a href="/leavemanage/?view=Maternity/Paternity">
-                            <i class="fa-solid fa-children p-2 rounded-full bg-indigo-300"></i>
-                            <div class="mt-2">5/220</div>
-                            <div class="text-xl text-center mt-4 p-2 border rounded-md bg-indigo-100">Maternity/Paternity Leave</div>
-                        </a>
-                    </div>
+                <div>item</div>
 
-                </div>
-
-                <!-- section 2 -->
-                <div class=" my-6 border">
-                    <!-- table header -->
-                    <div class="grid grid-cols-7 gap-4 mb-4 border py-4 bg-indigo-100">
-                        <div class="text-center font-bold">eId</div>
-                        <div class="text-center font-bold">Employe Name</div>
-                        <div class="text-center font-bold">Department</div>
-                        <div class="text-center font-bold">Date</div>
-                        <div class="text-center font-bold">Leave Type</div>
-                        <div class="text-center font-bold">Reason</div>
-                        <div class="text-center font-bold">Status</div>
-                    </div>
-                    
-                    <!-- table data (rows) -->
-                    {% for item in leavedata %}
-                    <!-- {{ loop.index }}: {{ item }} -->
-                    <div class="grid grid-cols-7 gap-4 py-4 border mb-2">
-                        <div class="text-center">{{ item.leave_id }}</div>
-                        <div class="text-center">{{ item.user_name }}</div>
-                        <div class="text-center">{{ item.department }}</div>
-                        <div class="text-center">{{ item.date }}</div>
-                        <div class="text-center">{{ item.leave_type }}</div>
-                        
-
-                        <div class="tooltip tooltip-gray-200 bg-white text-gray-700" data-tip="{{ item.reason }}">
-                            <button class="btn text-white bg-indigo-600 hover:bg-indigo-700">View Reason</button>
-                        </div>
-
-                        {% if item.status == 'Approved' %}
-                                <div class="text-center text-white bg-green-700 mx-2 rounded-md my-auto py-2">Approved</div>
-                        {% elif item.status == 'Rejected' %}
-                        <div class="text-center text-white bg-red-700 mx-2 rounded-md my-auto py-2">Rejected</div>
-                        {% elif item.status == 'Pending' %}
-                            <div class="grid grid-cols-2 gap-2 px-2">
-                                <div class="text-center text-sm p-2 pt-3 hover:bg-green-700 hover:text-white bg-green-300 rounded-md">
-                                    <a href="/updateleavestat/?leave_id={{ item.leave_id }}&status=Approved">Approve</a>
-                                </div>
-                                <div class="text-center text-sm p-2 pt-3 hover:bg-red-700 hover:text-white bg-red-300 rounded-md">    
-                                    <a href="/updateleavestat/?leave_id={{ item.leave_id }}&status=Rejected">Reject</a>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-
-
-                    
-                </div>
-
+                {% endfor %}
 
             </div>
+
+
+            <form class=" mx-10" action="{% url 'chatinput' %}" method="post">
+                {% csrf_token %}
+                <input class="hidden" type="text" name="user_name" value="{{ user.username }}">
+                
+                <div class="grid grid-cols-7">
+                    <!-- <label for="name">Name:</label> -->
+                    <input class="bg-white border border-2 text-gray-700 w-full col-span-6" type="text" id="name" name="name">
+                    <button class="mx-2 text-xl text-center bg-indigo-500 text-white border rounded-md" type="submit">Submit</button>
+                </div>
+            </form>
 
         </div>
     </div>

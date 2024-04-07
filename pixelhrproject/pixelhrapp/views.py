@@ -1,5 +1,5 @@
 #  i have created this file - GTA
-
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Leave, Reimbusement
+from .models import Leave, Reimbusement, Employaccdata, Msgdata, Chatdata
 # import uuid
 import random
 from random import choice
@@ -23,6 +23,26 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 
 
+# gemini imports
+import google.generativeai as genai
+import json
+import base64
+import pathlib
+import pprint
+import requests
+import mimetypes
+from IPython.display import Markdown
+
+API_KEY="AIzaSyD9ZF_AshNR1jYQSxdSaEED7gboME_X9_M"
+genai.configure(api_key=API_KEY)
+model = 'gemini-1.0-pro' # @param {isTemplate: true}
+contents_b64 = 'W10='
+generation_config_b64 = 'eyJ0ZW1wZXJhdHVyZSI6MC45LCJ0b3BfcCI6MSwidG9wX2siOjEsIm1heF9vdXRwdXRfdG9rZW5zIjoyMDQ4LCJzdG9wX3NlcXVlbmNlcyI6W119'
+safety_settings_b64 = 'W3siY2F0ZWdvcnkiOiJIQVJNX0NBVEVHT1JZX0hBUkFTU01FTlQiLCJ0aHJlc2hvbGQiOiJCTE9DS19NRURJVU1fQU5EX0FCT1ZFIn0seyJjYXRlZ29yeSI6IkhBUk1fQ0FURUdPUllfSEFURV9TUEVFQ0giLCJ0aHJlc2hvbGQiOiJCTE9DS19NRURJVU1fQU5EX0FCT1ZFIn0seyJjYXRlZ29yeSI6IkhBUk1fQ0FURUdPUllfU0VYVUFMTFlfRVhQTElDSVQiLCJ0aHJlc2hvbGQiOiJCTE9DS19NRURJVU1fQU5EX0FCT1ZFIn0seyJjYXRlZ29yeSI6IkhBUk1fQ0FURUdPUllfREFOR0VST1VTX0NPTlRFTlQiLCJ0aHJlc2hvbGQiOiJCTE9DS19NRURJVU1fQU5EX0FCT1ZFIn1d'
+
+
+
+
 # You can use the ast module in Python to safely convert a string representation of a list to an actual list. Here's how you can do it:
 
 # from django.http import HttpResponse
@@ -34,13 +54,173 @@ from django.utils import timezone
 def welcome(request):
     return render(request, 'pixelhrapp/welcome.html')
 
+# def addnewuser(request):
+    # return render(request, 'pixelhrapp/addnewuser.html')
+
+def addnewuser(request):
+    if request.method == 'POST':
+        # Get data from the form
+        fullname = request.POST.get('fullname')
+        email = request.POST.get('email')
+        department = request.POST.get('department')
+        jobtitle = request.POST.get('jobtitle')
+        user_name = request.POST.get('user_name')
+        password = request.POST.get('password')
+        phoneno = request.POST.get('phoneno')
+        address = request.POST.get('address')
+        gender = request.POST.get('gender')
+        dateofbirth = request.POST.get('dateofbirth')
+        MaritalStatus = request.POST.get('MaritalStatus')
+        EmployeePhotoPath = request.POST.get('EmployeePhotoPath')
+        role = request.POST.get('role')
+        department = request.POST.get('department')
+        jobtitle = request.POST.get('jobtitle')
+        manager = request.POST.get('manager')
+        dateofjoin = request.POST.get('dateofjoin')
+        status = request.POST.get('status')
+        EmpStatus = request.POST.get('EmpStatus')
+        EmpType = request.POST.get('EmpType')
+        WorkLoc = request.POST.get('WorkLoc')
+
+        # Create an instance of Employaccdata model and assign values
+        employ_data = Employaccdata(
+            fullname=fullname,
+            email=email,
+            department=department,
+            jobtitle=jobtitle,
+            user_name=user_name,
+            password=password,
+            phoneno=phoneno,
+            address=address,
+            gender=gender,
+            dateofbirth=dateofbirth,
+            MaritalStatus=MaritalStatus,
+            EmployeePhotoPath=EmployeePhotoPath,
+            role=role,
+            manager=manager,
+            dateofjoin=dateofjoin,
+            status=status,
+            EmpStatus=EmpStatus,
+            EmpType=EmpType,
+            WorkLoc=WorkLoc
+        )
+
+        # Save the instance to the database
+        employ_data.save()
+
+        return redirect(attendencemanage)
+    else:
+        # return HttpResponse("Invalid request method. Only POST requests are allowed.")
+        return render(request, 'pixelhrapp/addnewuser.html')
+    
+    
+
+
+
+
+
 def dashboard(request):
     # create_dummy_leave_dataset()
     print("done leave data adding")
     return render(request, 'pixelhrapp/dashboard.html')
 
+def calculate_time_difference(checkin, checkout):
+    # Parse the checkin and checkout times into datetime objects
+    checkin_time = datetime.strptime(checkin, "%H:%M")
+    checkout_time = datetime.strptime(checkout, "%H:%M")
+
+    # Calculate the time difference
+    time_difference = checkout_time - checkin_time
+
+    # Return the time difference as a timedelta object
+    return time_difference
+
+
 def attendencemanage(request):
-    return render(request, 'pixelhrapp/attendence.html')
+    attend = Employaccdata.objects.all()
+
+    drifftlist = [] 
+    # calculate_time_difference(checkin, checkout)
+    # Iterate over each attendance record
+    for attendance in attend:
+        # Calculate time difference for this attendance record
+        time_diff = calculate_time_difference(attendance.Checkin, attendance.Checkout)
+        drifftlist.append(time_diff)
+        # Print the result
+        # print(f"User: {attendance.user_name}, Time Difference: {time_diff}")
+
+    
+    params = {
+        "attend" : attend,
+        "drifftlist" : drifftlist,
+        # "exp_type_counts" : attend,
+    }
+    return render(request, 'pixelhrapp/attendence.html', params)
+
+
+
+def filter_leave_data(user_name):
+    # Filter Leave instances based on the provided user_name
+    leave_data = Leave.objects.filter(user_name=user_name)
+    
+    # Initialize leave count dictionary
+    leave_count = {leave_type: 0 for leave_type in ['Sick', 'Privilege', 'Casual', 'Maternity/Paternity']}
+
+    # Calculate leave count for each type
+    for leave in leave_data:
+        if leave.leave_type in leave_count:
+            leave_count[leave.leave_type] += 1
+
+    # Edit the list according to leave count
+    updated_list = []
+    for leave_type, count in leave_count.items():
+        updated_list.append(count)
+
+    return updated_list
+
+def employprofile(request):
+    view_type = request.GET.get('profileid')
+    employdata = Employaccdata.objects.filter(eacc_id=view_type)
+
+    spiderchartdata = [0, 0, 0, 0, 0]
+    for employaccdata in employdata:
+        print("eacc_id:", employaccdata.eacc_id)
+        print("Productivityvalue:", employaccdata.Productivityvalue)
+        print("Satisfactionvalue:", employaccdata.Satisfactionvalue)
+        print("FeedbackScorevalue:", employaccdata.FeedbackScorevalue)
+        print("Skillsvalue:", employaccdata.Skillsvalue)
+        print("Communicationvalue:", employaccdata.Communicationvalue)
+
+        leavedata = filter_leave_data(employaccdata.user_name)
+        print("leavedata : ", leavedata)
+        print("employaccdata.user_name : ", employaccdata.user_name)
+
+        # [{'leave_type': 'Sick', 'count': 1}, {'leave_type': 'Privilege', 'count': 0}, {'leave_type': 'Casual', 'count': 0}, {'leave_type': 'Maternity/Paternity', 'count': 0}]   
+
+        # Iterate over the list to find the count for leave_type = 'Sick'
+        # for item in leavedata:
+        #     if item['leave_type'] == 'Sick':
+        #         spiderchartdata[0] = item['count']
+        #     if item['leave_type'] == 'Privilege':
+        #         spiderchartdata[1] = item['count']
+        #     if item['leave_type'] == 'Casual':
+        #         spiderchartdata[2] = item['count']
+        #     if item['leave_type'] == 'Maternity/Paternity':
+        #         spiderchartdata[3] = item['count']
+
+        spiderchartdata[0] = leavedata[0]
+        spiderchartdata[1] = leavedata[1]
+        spiderchartdata[2] = leavedata[2]
+        spiderchartdata[3] = leavedata[3]
+            
+
+    params = {
+        "employdata" : employdata,
+        "spiderchartdata" : spiderchartdata,
+    }
+    return render(request, 'pixelhrapp/employprofile.html', params)
+
+# http://127.0.0.1:8000/employprofile/?profileid=1
 
 
 def reimbusmentmanage(request):
@@ -127,16 +307,280 @@ http://127.0.0.1:8000/updatereimbusment/?reimbus_id=28&status=Approved
 '''
 
 
+# http://127.0.0.1:8000/update_employee/1?status=Working&Checkin=09:00&Checkout=17:00
+
+
+def updateleavestat(request):
+    if request.method == 'GET':
+        # Get the leave_id and status from the request
+        eacc_id = request.GET.get('eacc_id')
+
+        employee = get_object_or_404(Employaccdata, pk=eacc_id)
+
+
+        employee.status = request.GET.get('status')
+        employee.Checkin = request.GET.get('Checkin')
+        employee.Checkout = request.GET.get('Checkout')
+        employee.save()
+
+
+        # return JsonResponse({'message': 'Leave status updated successfully'}, status=200)
+        # redirect_url = '/leavemanage/?view=all'
+
+        # return redirect(redirect_url)
+        return JsonResponse({'success': 'success method'}, status=405)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+
+# update_employee/1/
+def update_employee(request, eacc_id):
+    # Retrieve the employee object
+    employee = get_object_or_404(Employaccdata, pk=eacc_id)
+
+    if request.method == 'GET':
+        employee.status = request.POST.get('status')
+        employee.Checkin = request.POST.get('Checkin')
+        employee.Checkout = request.POST.get('Checkout')
+        
+        # Save the changes
+        employee.save()
+        
+        # Redirect to a success URL or render a success template
+        # return redirect('success-url')  # Replace 'success-url' with the name of your success URL pattern
+        return HttpResponse("saved successfully.")
+    
+    
+    # Render a form with the current data for the employee
+    return HttpResponse("Simple request.")
+    # return render(request, 'update_employee.html', {'employee': employee})
+
+
+
 def hrbot(request):
-    return render(request, 'pixelhrapp/hrbotpage.html')
+    user_name = request.user.username
+
+    chat_data = Chatdata.objects.filter(user_name=user_name)
+
+    params = {
+        "chat_data" : chat_data,
+    }
+
+    return render(request, 'pixelhrapp/hrbotpage.html', params)
+
+def chatbot(text_to_encode):
+    # text_to_encode = 'what is ai in real world' # @param {isTemplate: true}
+    encoded_text_b64 = base64.b64encode(text_to_encode.encode()).decode()
+    print("Received")
+    # user_input_b64 = 'd2hhdCBpcyBhaSBpbiByZWFsIHdvcmxk'  # Example base64-encoded string with padding
+    user_input_b64 = encoded_text_b64  # Example base64-encoded string with padding
+
+    # Add padding characters if needed
+    while len(user_input_b64) % 4 != 0:
+        user_input_b64 += '='
+    print("Generating")
+    contents = json.loads(base64.b64decode(contents_b64))
+    generation_config = json.loads(base64.b64decode(generation_config_b64))
+    safety_settings = json.loads(base64.b64decode(safety_settings_b64))
+    user_input = base64.b64decode(user_input_b64).decode()
+    stream = False
+    gemini = genai.GenerativeModel(model_name=model)
+    print("Done")
+    chat = gemini.start_chat(history=contents)
+
+    response = chat.send_message(
+        user_input,
+        stream=stream)
+    reply=response.text.replace("*","")
+    reply=reply.replace("\n","")
+    return reply
+
+def chatinput(request):
+    help_dict = {
+    'one': 1,
+    'two': 2,
+    'three': 3,
+    'four': 4,
+    'five':5,
+    'six': 6,
+    'seven': 7,
+    'eight': 8,
+    'nine': 9,
+    'zero': 0,
+    'ten':10
+    }
+
+    reply=""
+    if request.method == 'POST':
+        query = request.POST.get('name')
+        user_name = request.POST.get('user_name')
+        servicetype  = Employaccdata.objects.filter(user_name=user_name)
+
+        if "shaun" in query:
+            user_name = "shaun"
+        elif "ryan" in query:
+            user_name = "ryan"
+        elif "atharvapawar" in query:
+            user_name = "atharvapawar"
+
+        if "reimbursement" in query:
+            # servicetype = "shaun"Reimbusement.objects.all()
+            q=query.split(" ")
+            if "last" in q:
+                print(q.index('last')+1)
+                recent=help_dict[q[q.index('last')+1]] #last ten
+                reply="Getting it for you"
+                f"select * from Reimbusement Limit {recent}"
+                last_10_records = Reimbusement.objects.filter(user_name=user_name).order_by('-reimbus_id')[:recent]
+                print("last_10_records" , last_10_records)
+
+                params = {
+                    "last_10_records" : last_10_records,
+                }
+
+                return render(request, 'pixelhrapp/hrbotpage.html', params)
+
+        elif "leave" in query:
+            leave_objects =  Leave.objects.values_list('leave_id', 'reason')
+            leavereasonlist=list(leave_objects)
+            print(leavereasonlist)
+            a=str(leavereasonlist).replace('(',"")
+            a=a.replace(')','')
+            leavetemplate=f"I am giving you a list of id and their respective reasons for leave , you need to arrange them in the decreasing order of priority This is the list {a}"
+            reply=chatbot(leavetemplate)
+            print(reply)
+        # result_text = ""
+        # for obj in leave_objects:
+        #     result_text += f"Reimbursement ID: {obj.reimbus_id}\n"
+        #     result_text += f"Department: {obj.department}\n"
+        #     result_text += f"User Name: {obj.user_name}\n"
+        #     result_text += f"Date: {obj.date}\n"
+        #     result_text += f"Expense Type: {obj.expense_type}\n"
+        #     result_text += f"Amount: {obj.amount}\n"
+        #     result_text += f"Short Description: {obj.shortdesc}\n"
+        #     servicetype += "\n"
+
+
+        # elif "leave" in query:
+        #     # servicetype = "ryan"
+        #     leave_objects = Leave.objects.filter(user_name=user_name)
+        #     result_text = ""
+        #     for obj in leave_objects:
+        #         result_text += f"Reimbursement ID: {obj.leave_id}\n"
+        #         result_text += f"Department: {obj.department}\n"
+        #         result_text += f"User Name: {obj.user_name}\n"
+        #         result_text += f"Date: {obj.date}\n"
+        #         result_text += f"leave_type: {obj.leave_type}\n"
+        #         result_text += f"Amount: {obj.reason}\n"
+        #         result_text += f"Short Description: {obj.status}\n"
+        #         servicetype += "\n"
+
+        elif "employee" or "employees" or "work" in query:
+            employee_objects =  Employaccdata.objects.values_list('eacc_id', 'department')
+            # names = re.findall(r'\b[A-Z][a-z]*\b', query)[0]
+            names=""
+            for i in query:
+                if i in ['Web Development','Data Analytics','IoT','Computer']:
+                    names=i
+                    break
+            empdeptlist=list(employee_objects)
+            print(names)
+            print(empdeptlist)
+            print("This is the ans")
+            b=str(empdeptlist).replace('(',"")
+            b=b.replace(')','')
+            emptemplate=f"I am giving you a list of all the employee details you need to extract the id of all the employees whoose department is {names} The data set is {b}"
+            reply=chatbot(emptemplate)
+            # print(reply)
+
+        #     # servicetype = "atharvapawar"
+        #     leave_objects = Employaccdata.objects.filter(user_name=user_name)
+        #     result_text = ""
+        #     for obj in leave_objects:
+        #         result_text += f"Reimbursement ID: {obj.eacc_id}\n"
+        #         result_text += f"Department: {obj.department}\n"
+        #         result_text += f"User Name: {obj.user_name}\n"
+        #         result_text += f"jobtitle: {obj.jobtitle}\n"
+        #         result_text += f"manager: {obj.manager}\n"
+        #         result_text += f"EmpStatus: {obj.EmpStatus}\n"
+        #         result_text += f"EmpType: {obj.EmpType}\n"
+        #         result_text += f"WorkLoc: {obj.WorkLoc}\n"
+        #         result_text += f"role: {obj.role}\n"
+        #         servicetype += "\n"
+
+
+        print("servicetype" , servicetype)
+        print("user_name" , user_name)
+        template = "_"
+        template = template + f"{user_name} This is data from the database use this data and answer the folling query "
+        template = template + f"{query}"
+        print("template : ", template)
+
+        # reply = chatbot(template)
+
+        # Create a new record in the Chatdata model
+        new_chat_record = Chatdata.objects.create(
+            user_name=user_name,
+            query=query,
+            shortdesc=reply
+        )
+
+        # Optionally, you can save the new record explicitly
+        # new_chat_record.save()
+
+        return redirect(hrbot)
+    else:
+        return HttpResponse('Invalid request method. Only POST requests are allowed for this endpoint.')
+    
+
+
+
+
 
 def hrnotification(request):
+    
     return render(request, 'pixelhrapp/notification.html')
 
 def hrmail(request):
     return render(request, 'pixelhrapp/notification.html')
 
 
+
+
+# http://localhost:8000/leavecreate/?department=HR&user_name=John&leave_type=Vacation&days=2&reason=Family%20time&status=Pending
+
+def leave_create(request):
+    if request.method == 'GET':
+        # Retrieve data from query parameters
+        department = request.GET.get('department', 'Sample Department')
+        user_name = request.GET.get('user_name', 'Sample User')
+        date = request.GET.get('date', str(date.today()))
+        leave_type = request.GET.get('leave_type', 'Sample Leave Type')
+        days = request.GET.get('days', 1)
+        reason = request.GET.get('reason', 'Sample Reason')
+        status = request.GET.get('status', 'Pending')
+
+        # Convert days to integer
+        try:
+            days = int(days)
+        except ValueError:
+            days = 1
+
+        # Create Leave instance and save it to the database
+        leave = Leave.objects.create(
+            department=department,
+            user_name=user_name,
+            date=date,
+            leave_type=leave_type,
+            days=days,
+            reason=reason,
+            status=status
+        )
+        leave.save()
+
+        return HttpResponse("Leave instance created and saved successfully.")
+    else:
+        return HttpResponse("Invalid request method.")
 
 
 def leavemanage(request):
@@ -167,6 +611,7 @@ def leavemanage(request):
         'leave_type': leave.leave_type,
         'days': leave.days,
         'reason': leave.reason,
+        'llmsuggest': leave.llmsuggest,
         'status': leave.status
     } for leave in leaves]
 
@@ -384,8 +829,47 @@ def create_dummy_leave_dataset():
 '''
 
 
+def oneemploy(request):
+    if 'user_name' in request.GET:
+        user_name = request.GET['user_name']
+        employ_data = Employaccdata.objects.filter(user_name=user_name)
+        if employ_data.exists():
+            return HttpResponse(employ_data.values())
+        else:
+            return HttpResponse("No data found for user_name: {}".format(user_name))
+    else:
+        return HttpResponse("user_name parameter is missing.")
+
+def oneLeave(request):
+    if 'user_name' in request.GET:
+        user_name = request.GET['user_name']
+        leave_data = Leave.objects.filter(user_name=user_name)
+        if leave_data.exists():
+            return HttpResponse(leave_data.values())
+        else:
+            return HttpResponse("No data found for user_name: {}".format(user_name))
+    else:
+        return HttpResponse("user_name parameter is missing.")
+
+def oneReimbusement(request):
+    if 'user_name' in request.GET:
+        user_name = request.GET['user_name']
+        reimbusement_data = Reimbusement.objects.filter(user_name=user_name)
+        if reimbusement_data.exists():
+            return HttpResponse(reimbusement_data.values())
+        else:
+            return HttpResponse("No data found for user_name: {}".format(user_name))
+    else:
+        return HttpResponse("user_name parameter is missing.")
 
 
+
+'''
+http://127.0.0.1:8000/oneemploy/?user_name=shaun
+http://127.0.0.1:8000/oneLeave/?user_name=shaun
+http://127.0.0.1:8000/oneReimbusement/?user_name=shaun
+
+'''
 
 
 

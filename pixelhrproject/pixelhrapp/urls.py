@@ -5,6 +5,9 @@ urlpatterns = [
     path("", views.welcome, name="welcome"),
     path("dashboard/", views.dashboard, name="dashboard"),
 
+    path("addnewuser/", views.addnewuser, name="addnewuser"),
+
+    path("leave_create/", views.leave_create, name="leave_create"),
     path("leavemanage/", views.leavemanage, name="leavemanage"),
     path("updateleavestat/", views.updateleavestat, name="updateleavestat"),
     
@@ -13,10 +16,23 @@ urlpatterns = [
 
 
     path("attendencemanage/", views.attendencemanage, name="attendencemanage"),
+    path("employprofile/", views.employprofile, name="employprofile"),
+    
     path("hrbot/", views.hrbot, name="hrbot"),
+    path("chatinput/", views.chatinput, name="chatinput"),
+
+    path('update_employee/<int:eacc_id>/', views.update_employee, name='update_employee'),
+
+    
     path("hrnotification/", views.hrnotification, name="hrnotification"),
     path("hrmail/", views.hrmail, name="hrmail"),
   
+    
+    
+    # for external api
+    path("oneemploy/", views.oneemploy, name="oneemploy"),
+    path("oneLeave/", views.oneLeave, name="oneLeave"),
+    path("oneReimbusement/", views.oneReimbusement, name="oneReimbusement"),
 
 
 

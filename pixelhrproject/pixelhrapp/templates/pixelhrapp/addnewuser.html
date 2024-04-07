@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    
+
+    <title>PixelHR - Leave Management</title>
+</head>
+<body class="bg-white text-gray-700">
+    <!-- <div class="text-4xl text-center">PixelHR - Dashboard</div> -->
+
+    <div class="grid grid-cols-7">
+        <div class="border h-screen">
+            
+            <div class="flex py-2 mx-10"><img class="w-10 h-10" src="{% static 'pixelhrapp\setup\pixelhr-logo.jpeg' %}" alt="logo">
+                <div class="text-xl font-bold pt-2">PixelHr</div>
+            </div>
+
+            <div class="mx-4 px-2">
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                    <a href="/dashboard"><i class="fa-solid fa-table mr-2"></i> Dashboard</a>
+                </div>
+                
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                    <a href="/leavemanage/?view=all"><i class="fa-solid fa-gear mr-2"></i> Leaves</a>
+                </div>
+                
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                    <a href="/attendencemanage">
+                        <i class="fa-solid fa-user mr-2"></i> Attendence</a>
+                </div>
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                    <a href="/reimbusmentmanage">
+                        <i class="fa-solid fa-user mr-2"></i>Reimbusment</a>   
+                </div>
+                
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white">
+                    <a href="/hrbot">
+                        <i class="fa-solid fa-robot mr-2"></i>Bot</a>   
+                </div>
+
+
+                <div class="text-xl border my-2 rounded-md px-2 p-2 hover:bg-indigo-600 hover:text-white"><i class="fa-solid fa-chart-simple mr-2"></i> Chart</div>
+            </div>
+        </div>
+
+
+        <div class="col-span-6 border">
+            
+            <!-- nav bar -->
+            <div class="border grid grid-cols-9 py-2">
+                <div class="col-span-6 ml-10 font-bold text-2xl">Dashboard</div>
+                <div class="col-span-2 mx-6 text-right text-xl">
+                    <i class="fa-solid fa-bell border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
+                    <i class="fa-solid fa-envelope border rounded-full p-2 hover:bg-indigo-700 hover:text-white"></i>
+                </div>
+                <div class="grid grid-cols-3">
+                    
+                    <div class="text-sm col-span-2 my-auto">{{ user.username|title }}
+                        <b class="mx-10">HR</b>
+                    </div>
+                    <div><img class="w-10 h-10 rounded-full border border-2" 
+                        src="{% static 'pixelhrapp\setup\boy avatar.png' %}" alt=""></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Area -->
+            <div class="p-10 ">
+                <form action="{% url 'addnewuser' %}" method="post">
+                {% csrf_token %}
+                <div class="container mx-auto p-8">
+                    <h1 class="text-3xl font-bold mb-6">User Information</h1>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Personal Information -->
+                        <div>
+                            <h2 class="text-xl font-semibold mb-4">Personal Information</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                    <input type="text" id="fullname" name="fullname" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                                    <input type="email" id="email" name="email" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other personal information fields can be added here -->
+                            </div>
+                        </div>
+                        <!-- Employment Information -->
+                        <div>
+                            <h2 class="text-xl font-semibold mb-4">Employment Information</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+                                    <input type="text" id="department" name="department" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="jobtitle" class="block text-sm font-medium text-gray-700">Job Title</label>
+                                    <input type="text" id="jobtitle" name="jobtitle" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="user_name" class="block text-sm font-medium text-gray-700">User name</label>
+                                    <input type="text" id="user_name" name="user_name" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                                    <input type="password" id="password" name="password" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                        <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="phoneno" class="block text-sm font-medium text-gray-700">Phone No</label>
+                                    <input type="text" id="phoneno" name="phoneno" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                                    <input type="text" id="address" name="address" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                                    <input type="text" id="gender" name="gender" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="dateofbirth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                                    <input type="text" id="dateofbirth" name="dateofbirth" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                        <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="MaritalStatus" class="block text-sm font-medium text-gray-700">Marital Status</label>
+                                    <input type="text" id="MaritalStatus" name="MaritalStatus" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="EmployeePhotoPath" class="block text-sm font-medium text-gray-700">EmployeePhotoPath</label>
+                                    <input type="text" id="EmployeePhotoPath" name="EmployeePhotoPath" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                                    <input type="text" id="role" name="role" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+                                    <input type="text" id="department" name="department" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                        <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="jobtitle" class="block text-sm font-medium text-gray-700">Job Title</label>
+                                    <input type="text" id="jobtitle" name="jobtitle" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="manager" class="block text-sm font-medium text-gray-700">Manager</label>
+                                    <input type="text" id="manager" name="manager" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+
+                    <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="dateofjoin" class="block text-sm font-medium text-gray-700">Date of Join</label>
+                                    <input type="text" id="dateofjoin" name="dateofjoin" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                                    <input type="text" id="status" name="status" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                        <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="EmpStatus" class="block text-sm font-medium text-gray-700">EmpStatus</label>
+                                    <input type="text" id="EmpStatus" name="EmpStatus" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label for="EmpType" class="block text-sm font-medium text-gray-700">EmpType</label>
+                                    <input type="text" id="EmpType" name="EmpType" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div>
+                            <!-- <h2 class="text-xl font-semibold mb-4">Employment Information</h2> -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="WorkLoc" class="block text-sm font-medium text-gray-700">Work Location</label>
+                                    <input type="text" id="WorkLoc" name="WorkLoc" class="bg-white border border-2 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                </div>
+                                <!-- Other employment information fields can be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+
+                    <!-- Submit Button -->
+                    <div class="mt-8">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+ 
+
+    
+
+</body>
+</html>

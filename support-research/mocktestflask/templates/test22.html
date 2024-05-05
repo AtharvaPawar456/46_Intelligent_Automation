@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- Tailwind CSS CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script>
+      var checkButton = document.getElementsByClassName("button");
+      checkButton.on;
+    </script>
+
+    <style>
+      body {
+        /* background-color:#23192d; */
+        background-image: url("static/roadmap_background.jpg");
+        background-size: 100%;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-image: linear-gradient(
+          to right,
+          #12012b,
+          #010531
+        ); /* Gradient color */
+        border: none;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .button {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-color: lightgray; /* Adjust button color as needed */
+        border-radius: 50%; /* Makes the button round */
+        right: -10px; /* Adjust button position horizontally */
+        top: calc(50% - 10px); /* Centers button vertically */
+        cursor: pointer;
+        position: absolute;
+        background-image: url(mobile/static/assets/img/check2.png);
+        background-size: 120%;
+        background-position: center;
+      }
+      .half-circle {
+        width: 200px;
+        height: 100px;
+        transform: rotate(270deg);
+        background-color: transparent;
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        border: 5px white;
+        border-style: dotted;
+        border-bottom: 0;
+        /* overflow: hidden; */
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      .line {
+        /* background-color: black; */
+        border: none;
+        width: 500px;
+        border-top: 5px dotted white;
+        position: relative;
+      }
+      .linet {
+        /* background-color: black; */
+        border: none;
+        width: 250px;
+        border-top: 5px dotted white;
+        position: relative;
+      }
+      .half-circleb {
+        width: 200px;
+        height: 100px;
+        transform: rotate(90deg);
+        background-color: transparent;
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        border: 5px white;
+        border-style: dotted;
+        border-bottom: 0;
+        /* overflow: hidden; */
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      .half-circlee {
+        width: 200px;
+        height: 100px;
+        /* background-color: gold; */
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        border: 10px solid gray;
+        border-bottom: 0;
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+      .info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .section-btn {
+        width: 200px;
+        border-radius: 8px;
+        position: relative;
+      }
+      .popup {
+        display: none;
+        padding: 10px;
+        margin-top: 10px;
+        /* border: 1px solid #ccc; */
+      }
+
+      .milestonepopup {
+        display: none;
+        padding: 10px;
+        margin-left: 700px;
+        margin-right: 0px;
+        border: 2px solid black;
+        height: 600px;
+        width: 300px;
+      }
+      .float-left {
+        float: left;
+        width: 70%;
+      }
+      .hidden {
+        display: none;
+      }
+      #e {
+        display: none;
+      }
+
+      /* .dash-line{
+        width: 200px;
+       height: 0;
+      border-top: 2px dashed #000;
+      transform: rotate(90deg);
+
+      } */
+    </style>
+
+    <script src="../static/popup.js"></script>
+
+    <!-- tailwind cdn link
+ <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
+  </head>
+
+  <body>
+    <br />
+    <br />
+    <div>
+      <div style="text-align: center" align="center" class="float-left">
+        <div style="width: 1850px" class="button-container">
+          <button class="section-btn" type="button" id="start">
+            Machine Learning Roadmap
+          </button>
+          <br />
+          <br />
+          <!-- <div class="dash-line"></div> -->
+          {% for mt,st in combined %}
+          <button onclick="togglePopup(1)" class="section-btn" type="button">
+            {{mt}}
+          </button>
+          <!-- roadmap ka spiral div  -->
+          <div id="{{mt}}" class="popup">
+            <br />
+            <br />
+            <br />
+            <center>
+              <div style="height: 100px">
+                <div style="margin-left: -605px" class="half-circle">
+                  <!-- <br /> -->
+                  &nbsp;
+                  <!-- 2nd button  -->
+                  <div
+                    id="m2"
+                    onclick="showHide()"
+                    style="
+                      transform: rotate(90deg);
+                      position: relative;
+                      margin-left: -15px;
+                      margin-top: -75px;
+                    "
+                    class="button"
+                  >
+                    <div style="top: 350px; bottom: 200px">{{st[1]}}</div>
+                  </div>
+                </div>
+                <div
+                  style="margin-top: -150px; margin-left: -250px"
+                  class="linet"
+                >
+                  <!-- 1st button  -->
+                  <div id="m1" onclick="showHide()" class="button"></div>
+                </div>
+                <br />
+                <br />
+                <br />
+                <div
+                  style="margin-top: 137px; margin-left: 0"
+                  class="line"
+                ></div>
+
+                <!-- 3rd button -->
+                <div
+                  id="m3"
+                  onclick="showHide()"
+                  style="
+                    margin-left: -20px;
+                    margin-top: -60px;
+                    position: relative;
+                  "
+                  class="button"
+                >
+                  <div style="top: 350px; left: 300px">{{st[2]}}</div>
+                </div>
+                <br />
+                <br />
+                <br />
+                <div style="margin-left: 607px; margin-top: 22px">
+                  <div style="background-color: #23192d" class="half-circleb">
+                    <!-- 4th button -->
+                    <div
+                      id="m4"
+                      onclick="showHide()"
+                      style="
+                        transform: rotate(-90deg);
+                        position: relative;
+                        margin-left: -25px;
+                        margin-top: -55px;
+                      "
+                      class="button"
+                    >
+                      <div style="top: 350px; left: 300px">{{st[3]}}</div>
+                    </div>
+                  </div>
+                  <div
+                    style="margin-top: 46px; margin-left: -355px"
+                    class="linet"
+                  ></div>
+                  <!-- 5th button -->
+                  <div
+                    onclick="showHide()"
+                    style="
+                      position: relative;
+                      margin-left: -620px;
+                      margin-top: -17px;
+                    "
+                    class="button"
+                  >
+                    <div style="top: 350px; left: 300px">{{st[4]}}</div>
+                  </div>
+                </div>
+              </div>
+            </center>
+          </div>
+          {% endfor %}
+          <!-- roadmap ka spiral endss -->
+
+          <button onclick="togglePopup(2)" class="section-btn" type="button">
+            Basic ML Models
+          </button>
+          <!-- roadmap ka spiral div  -->
+          <div id="popup2" class="popup">
+            <br />
+            <br />
+            <br />
+            <center>
+              <div>
+                <div style="height: 100px">
+                  <div style="margin-left: -605px" class="half-circle">
+                    <!-- <br /> -->
+                    &nbsp;
+                    <!-- 2nd button  -->
+
+                    <div
+                      id="milestone22"
+                      onclick="showHide()"
+                      style="
+                        transform: rotate(90deg);
+                        position: relative;
+                        margin-left: -15px;
+                        margin-top: -75px;
+                      "
+                      class="button"
+                    ></div>
+                  </div>
+                  <div
+                    style="margin-top: -150px; margin-left: -250px"
+                    class="linet"
+                  >
+                    <!-- 1st button  -->
+                    <div onclick="showHide()" class="button"></div>
+                  </div>
+                  <br />
+                  <br />
+                  <br />
+                  <div
+                    style="margin-top: 137px; margin-left: 0"
+                    class="line"
+                  ></div>
+                  <!-- 3rd button -->
+                  <div
+                    onclick="showHide()"
+                    style="
+                      margin-left: -20px;
+                      margin-top: -60px;
+                      position: relative;
+                    "
+                    class="button"
+                  ></div>
+                  <br />
+                  <br />
+                  <br />
+                  <div style="margin-left: 607px; margin-top: 22px">
+                    <div style="background-color: #23192d" class="half-circleb">
+                      <!-- 4th button -->
+                      <div
+                        onclick="showHide()"
+                        style="
+                          background-color: ;
+                          transform: rotate(-90deg);
+                          position: relative;
+                          margin-left: -25px;
+                          margin-top: -55px;
+                        "
+                        class="button"
+                      ></div>
+                    </div>
+                    <div
+                      style="margin-top: 46px; margin-left: -355px"
+                      class="linet"
+                    ></div>
+                    <!-- 5th button -->
+                    <div
+                      onclick="showHide()"
+                      style="
+                        position: relative;
+                        margin-left: -620px;
+                        margin-top: -17px;
+                      "
+                      class="button"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </center>
+          </div>
+
+          <!-- roadmap ka spiral endss -->
+
+          <button class="section-btn" type="button" id="end">
+            Roadmap End
+          </button>
+        </div>
+      </div>
+      <!-- <div class="col"> -->
+
+      <div id="e" align="center" style="width: 30%" class="float-left">
+        <div class="hideit">
+          <div
+            style="
+              height: 900px;
+              background-color: lightgray;
+              border-radius: 8px;
+              margin-top: 15px;
+              margin-bottom: 20px;
+              max-height: 40%;
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="half-circlee"></div> -->
+    <script defer>
+      // function changeWidth() {
+      //   // Get all elements with class 'bar'
+      //   var bars = document.querySelectorAll(".button-container");
+      //   // var hidediv = document.querySelectorAll(".hideit");
+      //   hidediv.classList.toggle("hidden");
+
+      //   // Loop through each bar and set its width to 30px
+      //   bars.forEach(function (bar) {
+      //     bar.style.width = "500px";
+      //   });
+      // }
+      function showHide() {
+        var bars = document.querySelectorAll(".button-container");
+        // var hidediv = document.querySelectorAll(".hideit");
+
+        // Loop through each bar and set its width to 30px
+        bars.forEach(function (bar) {
+          bar.style.width = "1000px";
+        });
+
+        var e = document.getElementById("e");
+
+        if (e.style.display === "none") {
+          bars.forEach(function (bar) {
+            bar.style.width = "1000px";
+          });
+
+          e.style.display = "block";
+
+          e.innerText =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et fringilla quam. Sed lacinia ornare mi eget luctus. Suspendisse vitae augue ex. Ut eu arcu ut lorem dignissim fringilla ut sodales ante. Duis augue elit, aliquam ut justo ac, auctor semper orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque dictum lectus feugiat, placerat sem consequat, ultricies orci. Cras ac enim in velit lobortis egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc euismod nunc erat, sed pharetra leo dictum pharetra. Suspendisse venenatis iaculis purus quis sagittis. Quisque.";
+          e.style.borderRadius = "10px";
+          e.style.height = "650px";
+          e.style.marginTop = "30px";
+        } else if (e.style.display === "block") {
+          bars.forEach(function (bar) {
+            bar.style.width = "1850px";
+          });
+
+          e.style.display = "none";
+        } else {
+          bars.forEach(function (bar) {
+            bar.style.width = "1000px";
+          });
+          e.style.display = "block";
+          e.style.backgroundColor = "lightgray";
+
+          e.innerText =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et fringilla quam. Sed lacinia ornare mi eget luctus. Suspendisse vitae augue ex. Ut eu arcu ut lorem dignissim fringilla ut sodales ante. Duis augue elit, aliquam ut justo ac, auctor semper orci. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque dictum lectus feugiat, placerat sem consequat, ultricies orci. Cras ac enim in velit lobortis egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc euismod nunc erat, sed pharetra leo dictum pharetra. Suspendisse venenatis iaculis purus quis sagittis. Quisque.";
+          e.style.borderRadius = "10px";
+          e.style.height = "650px";
+          e.style.marginTop = "30px";
+        }
+      }
+    </script>
+  </body>
+</html>

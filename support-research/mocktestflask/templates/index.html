@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Pixel . Mock Interview</title>
+  </head>
+  <body class="m-10">
+    <!-- Nav Bar -->
+    <div></div>
+
+    <!-- Body Bar -->
+    <div>
+      <div class="grid grid-cols-4 gap-4">
+        <div class="col-span-3 border p-10">
+          <div class="text-2xl font-bold text-gray-600">Question</div>
+          <div class="text-2xl mt-10">Q. {{ques}}</div>
+          <div class="p-4 mt-4 bg-red-300 border rounded-md">
+            Caution : "Be mindful and accurate in your responses during
+            interviews; honesty and clarity matter more than haste."
+          </div>
+        </div>
+
+        <div
+          class="border shadow-md p-2 rounded-md text-center font-bold text-4xl"
+        >
+          <video id="videoElement" width="640" height="480" autoplay></video>
+        </div>
+      </div>
+
+      <div
+        class="border rounded-md shadow-sm p-10 font-bold my-10"
+        id="messageBox"
+      >
+        Click on Start button and start speaking and submit your answer after
+        completing...
+      </div>
+
+      <div class="flex justify-center">
+        <button
+          id="startRecording"
+          class="p-2 border-2 border rounded-md mx-3 px-6 font-bold text-green-700 hover:border-black hover:shadow-md hover:bg-gray-200"
+        >
+          <i class="fa-solid fa-circle-play mr-2"></i>Start
+        </button>
+        <button
+          disabled
+          id="stopRecording"
+          class="p-2 border-2 border rounded-md mx-3 px-6 font-bold text-red-700 hover:border-black hover:shadow-md hover:bg-gray-200"
+        >
+          <i class="fa-solid fa-circle-stop mr-2"></i>Stop
+        </button>
+        <button
+          class="p-2 border-2 border rounded-md mx-3 px-6 font-bold text-blue-700 hover:border-black hover:shadow-md hover:bg-gray-200"
+          onclick="refresh()"
+        >
+          <i class="fa-solid fa-trash mr-2"></i>Clear
+        </button>
+        <form action="{{url_for('home')}}" method="post">
+          <button
+            class="p-2 border-2 border rounded-md mx-3 px-6 font-bold text-green-700 hover:border-black hover:shadow-md hover:bg-gray-200"
+            type="submit"
+          >
+            <i class="fa-solid fa-check mr-2"></i>Submit
+          </button>
+        </form>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 my-10">
+        <div class="border rounded-md shadow-md shadow-green-400 p-4">
+          <div class="text-2xl font-bold text-green-600">
+            <i class="fa-solid fa-user mr-2"></i>Your Answer
+          </div>
+          <div class="text-md text-gray-600 mt-4">{{answer}}</div>
+        </div>
+
+        <div class="border rounded-md shadow-md p-4" id="feedbackBox">
+          <div class="text-2xl font-bold text-gray-600">
+            <i class="fa-solid fa-message mr-2"></i>Feedback
+          </div>
+          <div class="">{{feedback}}</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const videoElement = document.getElementById("videoElement");
+      const startRecordingButton = document.getElementById("startRecording");
+      const stopRecordingButton = document.getElementById("stopRecording");
+      const messageBox = document.getElementById("messageBox");
+
+      let mediaRecorder;
+      let chunks = [];
+      function refresh() {
+        window.location.reload();
+      }
+      // Get access to the camera
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          videoElement.srcObject = stream;
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = (event) => {
+            chunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(chunks, { type: "video/mp4" });
+            const formData = new FormData();
+            formData.append("video", blob);
+
+            // Send video data to the server
+            fetch("/save-video", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => {
+                console.log("Video saved successfully!");
+                messageBox.innerText = "Video captured successfully!";
+                // window.location.reload();
+              })
+              .catch((error) => {
+                console.error("Error saving video:", error);
+              });
+          };
+        })
+        .catch((error) => {
+          console.error("Error accessing the camera:", error);
+        });
+
+      // Start recording
+      startRecordingButton.addEventListener("click", () => {
+        chunks = [];
+        mediaRecorder.start();
+        startRecordingButton.disabled = true;
+        stopRecordingButton.disabled = false;
+        messageBox.innerText = "Recording...";
+      });
+
+      // Stop recording
+      stopRecordingButton.addEventListener("click", () => {
+        mediaRecorder.stop();
+        startRecordingButton.disabled = false;
+        stopRecordingButton.disabled = true;
+        messageBox.innerText = "Finished...";
+
+        // Stop the video stream
+        const stream = videoElement.srcObject;
+        const tracks = stream.getTracks();
+
+        tracks.forEach(function (track) {
+          track.stop();
+        });
+
+        videoElement.srcObject = null;
+      });
+    </script>
+  </body>
+</html>

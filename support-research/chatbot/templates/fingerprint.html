@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fingerprint Authentication</title>
+</head>
+<body>
+    <button id="authButton">Authenticate with Fingerprint</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+    const authButton = document.getElementById('authButton');
+
+    // Check if the browser supports WebAuthn
+    if (!window.PublicKeyCredential) {
+        authButton.textContent = 'WebAuthn not supported';
+        authButton.disabled = true;
+        return;
+    }
+
+    // Request fingerprint authentication
+    authButton.addEventListener('click', async function () {
+        try {
+            const publicKey = {
+                challenge: new Uint8Array(32), // Generate a random challenge
+                userVerification: 'required',
+                allowCredentials: [{
+                    type: 'public-key',
+                    transports: ['internal'],
+                }]
+            };
+
+            const credential = await navigator.credentials.get({ publicKey });
+            console.log('Credential:', credential);
+
+            // Handle the credential response
+            // For example, send it to the server for verification
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>PixelHR - Dashboard</title>
+</head>
+<body>
+    <!-- <div class="text-4xl text-center">PixelHR - Dashboard</div> -->
+
+    <div class="border-b p-2 text-center text-xl font-bold"><i class="fa-solid fa-circle-user mr-2"></i>Employee</div>
+    
+    <div class="m-4">
+        <div class="text-center p-2">Good Morning! Nitin</div>
+        <div class="text-center p-2">07 April 2024, 7:00 am</div>
+        
+        <div class="my-4 text-xl text-center grid grid-cols-2 gap-2">
+            <div class="p-1 border rounded-xl hover:bg-indigo-300">ClockIn</div>
+            <div class="p-1 border rounded-xl hover:bg-indigo-300">ClockOut</div>
+        </div>
+
+        <!-- Cards Templates -->
+        <div class="grid grid-cols-2 gap-2">
+            <div class="p-4 border rounded-md grid grid-cols-5">
+                <div class="text-green-600"><i class="fa-solid fa-circle-dot"></i></div>
+                <div class="col-span-4">
+                    <div class="text-xs">My Attendence</div>
+                    <div class="text-xs">02 A This Month</div>
+                </div>
+            </div>
+            <div class="p-4 border rounded-md grid grid-cols-5">
+                <div class="text-orange-600"><i class="fa-solid fa-circle-dot"></i></div>
+                <div class="col-span-4">
+                    <div class="text-xs">My Task</div>
+                    <div class="text-xs">02 A This Month</div>
+                </div>
+            </div>
+            <div class="p-4 border rounded-md grid grid-cols-5">
+                <div class="text-indigo-600"><i class="fa-solid fa-circle-dot"></i></div>
+                <div class="col-span-4">
+                    <div class="text-xs">My Team</div>
+                    <div class="text-xs">02 A This Month</div>
+                </div>
+            </div>
+            <div class="p-4 border rounded-md grid grid-cols-5">
+                <div class="text-yellow-600"><i class="fa-solid fa-circle-dot"></i></div>
+                <div class="col-span-4">
+                    <div class="text-xs">My Leaves</div>
+                    <div class="text-xs">02 A This Month</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Tasks -->
+        <div class="text-2xl font-bold text-center mt-4">Pending Tasks</div>
+        <a href="https://d796-2409-40c0-1059-f23-d9ff-7640-ace-9a09.ngrok-free.app/chat"><div class="text-xl mt-4 bg-orange-600 p-2 rounded-md text-white"  onclick="{{url_for('chat')}}"><b class="border border-2 rounded-full px-2 mr-4 ">4</b>Chat Bot </div></a>
+        <div class="text-xl mt-4 bg-green-600 p-2 rounded-md text-white"><b class="border border-2 rounded-full px-2 mr-4 ">4</b>Attendence Request </div>
+    </div>
+
+</body>
+</html>

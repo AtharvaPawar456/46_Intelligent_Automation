@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calendar</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <!-- <script src="script.js" defer></script> -->
+
+    <style>
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .day {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        
+        .marked-red {
+            background-color: red;
+        }
+        
+        .marked-blue {
+            background-color: blue;
+        }
+        
+        .marked-green {
+            background-color: green;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Interactive Calendar</h1>
+    
+    <label for="month">Choose Month:</label>
+    <input type="month" id="month" name="month" onchange="updateCalendar()">
+    <div id="displayMonth"></div> <!-- Div to display the selected month -->
+
+    <h2>Mark Days</h2>
+    <input type="text" id="markDays" value="1, 3, 10, 12, 20" placeholder="Enter days to mark, e.g., 1, 3, 10">
+    <button onclick="markDays()">Mark Days</button>
+    <div id="calendar"></div>
+
+    <script>
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+        
+        function updateCalendar() {
+            const monthInput = document.getElementById('month').value;
+            //const monthInput = '2024-04';
+            console.log(monthInput);
+            const [year, month] = monthInput.split('-').map(Number);
+            const daysCount = daysInMonth(month, year);
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = ''; // Clear previous calendar
+
+             // Update the displayMonth div
+            const displayMonthDiv = document.getElementById('displayMonth');
+            const date = new Date(year, month - 1); // JavaScript months are 0-indexed
+            displayMonthDiv.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        
+            for (let i = 1; i <= daysCount; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = i;
+                calendar.appendChild(dayElement);
+            }
+        }
+        
+        function markDays() {
+            //const days = document.getElementById('markDays').value.split(',').map(Number);
+            const days = [1, 3, 10, 12, 6];
+            const daysElements = document.querySelectorAll('#calendar .day');
+            daysElements.forEach(dayElement => {
+                const dayNumber = parseInt(dayElement.textContent, 10);
+                if (days.includes(dayNumber)) {
+                    dayElement.classList.add('marked-green'); // You can use 'marked-blue' or 'marked-green'
+                }
+            });
+        }
+        
+    </script>
+</body>
+</html>
